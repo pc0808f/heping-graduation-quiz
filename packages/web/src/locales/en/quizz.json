@@ -24,7 +24,9 @@
       "video": "Video"
     },
     "mediaUrlPlaceholder": "Enter URL...",
-    "placeholder": "Start typing your question..."
+    "orUseUrl": "Or paste a URL (image / video / audio)",
+    "placeholder": "Start typing your question...",
+    "uploadImage": "Upload image"
   },
   "quizzSaved": "Quizz saved successfully",
   "quizzUpdated": "Quizz updated successfully",

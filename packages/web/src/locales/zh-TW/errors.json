@@ -28,6 +28,7 @@
     "failedToDelete": "刪除題庫失敗",
     "failedToSave": "題庫不完整，請確認每題都有標題和至少一個正確答案",
     "failedToUpdate": "更新題庫失敗",
+    "imageProcessFailed": "圖片處理失敗，請換一張或改用較小的圖片",
     "invalidImageUrl": "答案圖片網址格式不正確",
     "invalidMediaUrl": "媒體網址格式不正確",
     "noQuestions": "題庫至少要有一題",

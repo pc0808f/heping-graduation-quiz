@@ -2,18 +2,31 @@ import { MEDIA_TYPES } from "@razzia/common/constants"
 import type { AnswerOption } from "@razzia/common/types/game"
 import { z } from "zod"
 
+// 接受一般 http(s) 網址，或上傳圖片轉成的內嵌 data: URI（base64）
+const isHttpOrDataUrl = (v: string) =>
+  /^https?:\/\//u.test(v) || v.startsWith("data:")
+
 export const questionMediaValidator = z.object({
   type: z
     .enum([MEDIA_TYPES.IMAGE, MEDIA_TYPES.VIDEO, MEDIA_TYPES.AUDIO])
     .optional(),
-  url: z.url("errors:quizz.invalidMediaUrl"),
+  url: z
+    .string()
+    .min(1, "errors:quizz.invalidMediaUrl")
+    .refine(isHttpOrDataUrl, "errors:quizz.invalidMediaUrl"),
 })
 
 // 答案物件：至少要有 text 或 image 其中之一
 const answerObjectValidator = z
   .object({
     text: z.string().min(1, "errors:quizz.answerEmpty").optional(),
-    image: z.string().url("errors:quizz.invalidImageUrl").optional(),
+    image: z
+      .string()
+      .refine(
+        (v) => /^https?:\/\//u.test(v) || v.startsWith("data:image/"),
+        "errors:quizz.invalidImageUrl",
+      )
+      .optional(),
   })
   .refine((a) => Boolean(a.text?.trim()) || Boolean(a.image?.trim()), {
     message: "errors:quizz.answerEmpty",
@@ -49,4 +62,6 @@ export const quizzValidator = z.object({
 })
 
 export type QuizzValidated = z.infer<typeof quizzValidator>
-export type AnswerValidated = z.infer<typeof answerObjectValidator> & AnswerOption
+
+export type AnswerValidated = z.infer<typeof answerObjectValidator> &
+  AnswerOption

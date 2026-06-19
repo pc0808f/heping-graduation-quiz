@@ -12,6 +12,8 @@ const WS_PORT = 3001
 
 const io: Server = new ServerIO({
   path: "/ws",
+  // 提高單則訊息上限（預設 1MB），以容納題目內嵌的 base64 圖片
+  maxHttpBufferSize: 1e7,
 })
 initConfig()
 

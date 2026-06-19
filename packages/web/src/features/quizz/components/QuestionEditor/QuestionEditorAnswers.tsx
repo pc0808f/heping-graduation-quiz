@@ -4,19 +4,52 @@ import {
   ANSWERS_LABELS,
 } from "@razzia/web/features/game/utils/constants"
 import { useQuizzEditor } from "@razzia/web/features/quizz/contexts/quizz-editor-context"
+import { compressImageToDataUrl } from "@razzia/web/features/quizz/utils/compressImage"
 import clsx from "clsx"
-import { Check, Image as ImageIcon, Minus, Plus, X as XIcon } from "lucide-react"
+import {
+  Check,
+  Image as ImageIcon,
+  Minus,
+  Plus,
+  Upload,
+  X as XIcon,
+} from "lucide-react"
+import { type ChangeEvent, useState } from "react"
+import toast from "react-hot-toast"
 import { useTranslation } from "react-i18next"
 
 const QuestionEditorAnswers = () => {
   const { currentQuestion, currentIndex, updateQuestion } = useQuizzEditor()
   const { t } = useTranslation()
+  const [uploadingIndex, setUploadingIndex] = useState<number | null>(null)
 
   const updateAnswer = (index: number, patch: Partial<AnswerOption>) => {
     const next = [...currentQuestion.answers]
     next[index] = { ...next[index], ...patch }
     updateQuestion(currentIndex, { answers: next })
   }
+
+  const handleUploadAnswerImage =
+    (index: number) => async (e: ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0]
+      // 允許重新選同一個檔案
+      e.target.value = ""
+
+      if (!file) {
+        return
+      }
+
+      setUploadingIndex(index)
+
+      try {
+        const image = await compressImageToDataUrl(file)
+        updateAnswer(index, { image })
+      } catch {
+        toast.error(t("errors:quizz.imageProcessFailed"))
+      } finally {
+        setUploadingIndex(null)
+      }
+    }
 
   const addAnswer = () => {
     if (currentQuestion.answers.length >= 4) {
@@ -125,6 +158,21 @@ const QuestionEditorAnswers = () => {
                   value={answer.image ?? ""}
                   onChange={(e) => updateAnswer(i, { image: e.target.value })}
                 />
+                <label
+                  className={clsx(
+                    "flex size-6 shrink-0 cursor-pointer items-center justify-center rounded text-white/80 hover:bg-white/20",
+                    uploadingIndex === i && "pointer-events-none opacity-50",
+                  )}
+                  title={t("quizz:question.uploadImage")}
+                >
+                  <Upload className="size-4" />
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={handleUploadAnswerImage(i)}
+                  />
+                </label>
                 {hasImage && (
                   <img
                     src={answer.image}

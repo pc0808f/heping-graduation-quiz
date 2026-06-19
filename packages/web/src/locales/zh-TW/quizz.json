@@ -24,7 +24,9 @@
       "video": "影片"
     },
     "mediaUrlPlaceholder": "輸入網址...",
-    "placeholder": "輸入題目..."
+    "orUseUrl": "或貼上網址（圖片／影片／音訊）",
+    "placeholder": "輸入題目...",
+    "uploadImage": "上傳圖片"
   },
   "quizzSaved": "題庫已儲存",
   "quizzUpdated": "題庫已更新",

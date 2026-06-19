@@ -1,3 +1,4 @@
+import { MEDIA_TYPES } from "@razzia/common/constants"
 import type { QuestionMediaType } from "@razzia/common/types/game"
 import { questionMediaValidator } from "@razzia/common/validators/quizz"
 import Button from "@razzia/web/components/Button"
@@ -5,8 +6,9 @@ import Card from "@razzia/web/components/Card"
 import Input from "@razzia/web/components/Input"
 import QuestionMedia from "@razzia/web/components/QuestionMedia"
 import { useQuizzEditor } from "@razzia/web/features/quizz/contexts/quizz-editor-context"
-import { Image, ImageOff, Music, Video } from "lucide-react"
-import { type ChangeEvent } from "react"
+import { compressImageToDataUrl } from "@razzia/web/features/quizz/utils/compressImage"
+import { Image, ImageOff, Music, Upload, Video } from "lucide-react"
+import { type ChangeEvent, useRef, useState } from "react"
 import toast from "react-hot-toast"
 import { useTranslation } from "react-i18next"
 
@@ -14,6 +16,29 @@ const QuestionEditorMedia = () => {
   const { updateQuestion, currentIndex, currentQuestion } = useQuizzEditor()
   const questionMedia = currentQuestion.media
   const { t } = useTranslation()
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  const [uploading, setUploading] = useState(false)
+
+  const handleUploadImage = async (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    // 允許重新選同一個檔案
+    e.target.value = ""
+
+    if (!file) {
+      return
+    }
+
+    setUploading(true)
+
+    try {
+      const url = await compressImageToDataUrl(file)
+      updateQuestion(currentIndex, { media: { type: MEDIA_TYPES.IMAGE, url } })
+    } catch {
+      toast.error(t("errors:quizz.imageProcessFailed"))
+    } finally {
+      setUploading(false)
+    }
+  }
 
   const hadnleChangeMediaType = (type: QuestionMediaType) => () => {
     const result = questionMediaValidator.safeParse({
@@ -53,6 +78,32 @@ const QuestionEditorMedia = () => {
           <ImageOff className="size-16 stroke-gray-600" />
           <p className="text-center text-sm text-gray-600">
             {t("quizz:question.addMediaHint")}
+          </p>
+
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={handleUploadImage}
+          />
+          <Button
+            onClick={() => fileInputRef.current?.click()}
+            disabled={uploading}
+            className="bg-gray-800 text-white transition-colors hover:bg-gray-700"
+          >
+            <div className="flex items-center gap-1.5">
+              <Upload className="size-5" />
+              <p>
+                {uploading
+                  ? t("common:loading")
+                  : t("quizz:question.uploadImage")}
+              </p>
+            </div>
+          </Button>
+
+          <p className="text-xs text-gray-400">
+            {t("quizz:question.orUseUrl")}
           </p>
           <Input
             variant="sm"
