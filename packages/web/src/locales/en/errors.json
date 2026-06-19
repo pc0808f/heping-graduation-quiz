@@ -24,10 +24,11 @@
     "title": "Page not found"
   },
   "quizz": {
-    "answerEmpty": "An answer cannot be empty",
+    "answerEmpty": "An answer cannot be empty (must have text or image)",
     "failedToDelete": "Failed to delete quizz",
     "failedToSave": "Quizz is incomplete, make sure all questions have a title and at least one correct answer",
     "failedToUpdate": "Failed to update quizz",
+    "invalidImageUrl": "Answer image URL must be a valid URL",
     "invalidMediaUrl": "Media URL must be a valid URL",
     "noQuestions": "A quizz must have at least one question",
     "notFound": "Quizz not found",

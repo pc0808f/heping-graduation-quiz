@@ -24,10 +24,15 @@ export interface QuestionMedia {
   url: string
 }
 
+export interface AnswerOption {
+  text?: string
+  image?: string
+}
+
 export interface Question {
   question: string
   media?: QuestionMedia
-  answers: string[]
+  answers: AnswerOption[]
   solutions: number[]
   cooldown: number
   time: number

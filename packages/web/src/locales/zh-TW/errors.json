@@ -1,0 +1,45 @@
+{
+  "auth": {
+    "invalidInviteCode": "邀請碼無效",
+    "usernameTooLong": "暱稱不能超過 20 個字",
+    "usernameTooShort": "暱稱不能少於 4 個字"
+  },
+  "game": {
+    "expired": "遊戲已過期",
+    "kickedByManager": "你已被主持人踢出",
+    "managerAlreadyConnected": "主持人已連線",
+    "managerDisconnected": "主持人已離線",
+    "noPlayersConnected": "目前沒有玩家連線",
+    "notFound": "找不到遊戲",
+    "playerAlreadyConnected": "玩家已連線"
+  },
+  "manager": {
+    "failedToReadConfig": "讀取設定失敗",
+    "invalidPassword": "密碼錯誤",
+    "passwordNotConfigured": "尚未設定主持人密碼"
+  },
+  "notFound": {
+    "back": "回到首頁",
+    "description": "你要找的頁面不存在。",
+    "title": "找不到頁面"
+  },
+  "quizz": {
+    "answerEmpty": "答案不能是空的（至少要有文字或圖片）",
+    "failedToDelete": "刪除題庫失敗",
+    "failedToSave": "題庫不完整，請確認每題都有標題和至少一個正確答案",
+    "failedToUpdate": "更新題庫失敗",
+    "invalidImageUrl": "答案圖片網址格式不正確",
+    "invalidMediaUrl": "媒體網址格式不正確",
+    "noQuestions": "題庫至少要有一題",
+    "notFound": "找不到題庫",
+    "questionEmpty": "題目不能是空的",
+    "subjectEmpty": "標題不能是空的",
+    "tooFewAnswers": "一題至少要有 2 個答案",
+    "tooManyAnswers": "一題不能超過 4 個答案"
+  },
+  "route": {
+    "back": "回到首頁",
+    "description": "發生意外錯誤，請重試一次。",
+    "title": "發生錯誤"
+  }
+}

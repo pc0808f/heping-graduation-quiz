@@ -30,7 +30,7 @@ const QuizzEditorContext = createContext<QuizzEditorContextType | null>(null)
 const defaultQuestion = (): QuestionWithId => ({
   id: uuid(),
   question: "",
-  answers: ["", ""],
+  answers: [{ text: "" }, { text: "" }],
   solutions: [0],
   cooldown: 5,
   time: 20,
@@ -39,6 +39,10 @@ const defaultQuestion = (): QuestionWithId => ({
 const toQuestionWithId = (q: Question): QuestionWithId => ({
   ...q,
   id: uuid(),
+  // backcompat: 舊格式 (string[]) 自動轉成 AnswerOption[]
+  answers: q.answers.map((a) =>
+    typeof a === "string" ? { text: a } : a,
+  ),
 })
 
 type QuizzEditorProviderProps = PropsWithChildren<{

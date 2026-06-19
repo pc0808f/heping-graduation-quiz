@@ -84,15 +84,14 @@ const Responses = ({
           {answers.map((answer, key) => (
             <AnswerButton
               key={key}
+              answer={answer}
               className={clsx(ANSWERS_COLORS[key], {
                 // oxlint-disable-next-line typescript/no-unnecessary-condition
                 "opacity-65": responses && !solutions.includes(key),
               })}
               label={ANSWERS_LABELS[key]}
               correct={solutions.includes(key)}
-            >
-              {answer}
-            </AnswerButton>
+            />
           ))}
         </div>
       </div>

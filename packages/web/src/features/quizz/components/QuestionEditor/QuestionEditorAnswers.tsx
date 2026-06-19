@@ -1,19 +1,20 @@
+import type { AnswerOption } from "@razzia/common/types/game"
 import {
   ANSWERS_COLORS,
   ANSWERS_LABELS,
 } from "@razzia/web/features/game/utils/constants"
 import { useQuizzEditor } from "@razzia/web/features/quizz/contexts/quizz-editor-context"
 import clsx from "clsx"
-import { Check, Minus, Plus } from "lucide-react"
+import { Check, Image as ImageIcon, Minus, Plus, X as XIcon } from "lucide-react"
 import { useTranslation } from "react-i18next"
 
 const QuestionEditorAnswers = () => {
   const { currentQuestion, currentIndex, updateQuestion } = useQuizzEditor()
   const { t } = useTranslation()
 
-  const updateAnswer = (index: number, value: string) => {
+  const updateAnswer = (index: number, patch: Partial<AnswerOption>) => {
     const next = [...currentQuestion.answers]
-    next[index] = value
+    next[index] = { ...next[index], ...patch }
     updateQuestion(currentIndex, { answers: next })
   }
 
@@ -22,7 +23,9 @@ const QuestionEditorAnswers = () => {
       return
     }
 
-    updateQuestion(currentIndex, { answers: [...currentQuestion.answers, ""] })
+    updateQuestion(currentIndex, {
+      answers: [...currentQuestion.answers, { text: "" }],
+    })
   }
 
   const removeAnswer = () => {
@@ -81,24 +84,25 @@ const QuestionEditorAnswers = () => {
       <div className="grid grid-cols-2 gap-3">
         {currentQuestion.answers.map((answer, i) => {
           const isSelected = currentQuestion.solutions.includes(i)
+          const hasImage = Boolean(answer.image?.trim())
 
           return (
             <div
               key={i}
               className={clsx(
-                "flex items-center gap-3 rounded-2xl px-4 py-6",
+                "flex flex-col gap-2 rounded-2xl p-3",
                 ANSWERS_COLORS[i],
               )}
             >
-              <span className="flex size-7 shrink-0 items-center justify-center rounded-md bg-black/20 text-sm font-bold text-white md:size-8 md:text-base">
-                {ANSWERS_LABELS[i]}
-              </span>
-              <div className="flex flex-1 items-center justify-between gap-1.5 drop-shadow-md">
+              <div className="flex items-center gap-2">
+                <span className="flex size-7 shrink-0 items-center justify-center rounded-md bg-black/20 text-sm font-bold text-white md:size-8 md:text-base">
+                  {ANSWERS_LABELS[i]}
+                </span>
                 <input
                   className="w-full bg-transparent font-semibold text-white placeholder-white/70 outline-none"
                   placeholder={t("quizz:addAnswerPlaceholder")}
-                  value={answer}
-                  onChange={(e) => updateAnswer(i, e.target.value)}
+                  value={answer.text ?? ""}
+                  onChange={(e) => updateAnswer(i, { text: e.target.value })}
                 />
                 <button
                   type="button"
@@ -112,6 +116,31 @@ const QuestionEditorAnswers = () => {
                 >
                   {isSelected && <Check className="size-4 stroke-5" />}
                 </button>
+              </div>
+              <div className="flex items-center gap-2 rounded-lg bg-black/20 px-2 py-1.5">
+                <ImageIcon className="size-4 shrink-0 text-white/80" />
+                <input
+                  className="w-full bg-transparent text-sm text-white placeholder-white/60 outline-none"
+                  placeholder={t("quizz:addAnswerImagePlaceholder")}
+                  value={answer.image ?? ""}
+                  onChange={(e) => updateAnswer(i, { image: e.target.value })}
+                />
+                {hasImage && (
+                  <img
+                    src={answer.image}
+                    alt=""
+                    className="size-8 shrink-0 rounded object-cover"
+                  />
+                )}
+                {hasImage && (
+                  <button
+                    type="button"
+                    onClick={() => updateAnswer(i, { image: undefined })}
+                    className="flex size-5 shrink-0 items-center justify-center rounded-full bg-white/30 text-white hover:bg-white/50"
+                  >
+                    <XIcon className="size-3" />
+                  </button>
+                )}
               </div>
             </div>
           )

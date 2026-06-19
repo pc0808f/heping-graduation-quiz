@@ -1,0 +1,32 @@
+{
+  "addAnswerImagePlaceholder": "圖片網址（選填）",
+  "addAnswerPlaceholder": "輸入答案...",
+  "addQuestion": "新增題目",
+  "answersCountSuffix": " 個答案",
+  "deleteQuestion": "刪除題目",
+  "noQuestionYet": "還沒有題目",
+  "question": {
+    "addMediaHint": "加入圖片、影片或音訊到題目",
+    "config": {
+      "answerTime": "答題時間",
+      "answerTimeHint": "玩家答題的時間",
+      "noTimeLimit": "無時間限制",
+      "noTimeLimitHint": "依答題順序給分，無時間限制",
+      "questionDisplay": "題目顯示時間",
+      "questionDisplayHint": "答案出現前的等待時間",
+      "timings": "時間設定"
+    },
+    "deleteQuestion": "刪除題目",
+    "deleteQuestionConfirm": "確定要刪除這題嗎？",
+    "media": {
+      "audio": "音訊",
+      "image": "圖片",
+      "video": "影片"
+    },
+    "mediaUrlPlaceholder": "輸入網址...",
+    "placeholder": "輸入題目..."
+  },
+  "quizzSaved": "題庫已儲存",
+  "quizzUpdated": "題庫已更新",
+  "titleQuizzPlaceholder": "題庫標題..."
+}

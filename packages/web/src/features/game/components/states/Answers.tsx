@@ -117,12 +117,11 @@ const Answers = ({
           {answers.map((answer, key) => (
             <AnswerButton
               key={key}
+              answer={answer}
               className={clsx(ANSWERS_COLORS[key])}
               label={ANSWERS_LABELS[key]}
               onClick={handleAnswer(key)}
-            >
-              {answer}
-            </AnswerButton>
+            />
           ))}
         </div>
       </div>

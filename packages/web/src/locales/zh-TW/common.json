@@ -1,0 +1,22 @@
+{
+  "cancel": "取消",
+  "confirm": "確認",
+  "connecting": "連線中...",
+  "delete": "刪除",
+  "exit": "離開",
+  "language": {
+    "de": "德文",
+    "en": "英文",
+    "es": "西班牙文",
+    "fr": "法文",
+    "it": "義大利文",
+    "ja": "日文",
+    "zh-TW": "繁體中文"
+  },
+  "loading": "載入中...",
+  "next": "下一題",
+  "save": "儲存",
+  "seconds": "秒",
+  "skip": "跳過",
+  "submit": "送出"
+}

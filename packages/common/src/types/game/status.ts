@@ -1,4 +1,4 @@
-import type { Player, QuestionMedia } from "@razzia/common/types/game"
+import type { Player, QuestionMedia, AnswerOption } from "@razzia/common/types/game"
 
 export const STATUS = {
   SHOW_ROOM: "SHOW_ROOM",
@@ -25,7 +25,7 @@ export interface CommonStatusDataMap {
   }
   SELECT_ANSWER: {
     question: string
-    answers: string[]
+    answers: AnswerOption[]
     media?: QuestionMedia
     time: number
     totalPlayer: number
@@ -48,7 +48,7 @@ interface ManagerExtraStatus {
     question: string
     responses: Record<number, number>
     solutions: number[]
-    answers: string[]
+    answers: AnswerOption[]
     media?: QuestionMedia
   }
   SHOW_LEADERBOARD: { oldLeaderboard: Player[]; leaderboard: Player[] }

@@ -3,4 +3,5 @@
 .env
 .secrets
 release.json
-web2
+web-dev*.log
+web-dev-err.log

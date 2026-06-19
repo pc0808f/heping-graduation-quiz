@@ -3,6 +3,7 @@ import { Globe } from "lucide-react"
 import { useTranslation } from "react-i18next"
 
 const LANGUAGES = [
+  { code: "zh-TW", label: "common:language.zh-TW" },
   { code: "de", label: "common:language.de" },
   { code: "en", label: "common:language.en" },
   { code: "es", label: "common:language.es" },

@@ -1,4 +1,5 @@
 import { MEDIA_TYPES } from "@razzia/common/constants"
+import type { AnswerOption } from "@razzia/common/types/game"
 import { z } from "zod"
 
 export const questionMediaValidator = z.object({
@@ -8,11 +9,31 @@ export const questionMediaValidator = z.object({
   url: z.url("errors:quizz.invalidMediaUrl"),
 })
 
+// 答案物件：至少要有 text 或 image 其中之一
+const answerObjectValidator = z
+  .object({
+    text: z.string().min(1, "errors:quizz.answerEmpty").optional(),
+    image: z.string().url("errors:quizz.invalidImageUrl").optional(),
+  })
+  .refine((a) => Boolean(a.text?.trim()) || Boolean(a.image?.trim()), {
+    message: "errors:quizz.answerEmpty",
+  })
+
+// 答案 union：向後相容舊的「純字串」格式，自動 transform 成 { text }
+// 新格式：{ text?, image? }，至少要有一個
+export const answerValidator = z.union([
+  z
+    .string()
+    .min(1, "errors:quizz.answerEmpty")
+    .transform((v) => ({ text: v })),
+  answerObjectValidator,
+])
+
 const questionValidator = z.object({
   question: z.string().min(1, "errors:quizz.questionEmpty"),
   media: questionMediaValidator.optional(),
   answers: z
-    .array(z.string().min(1, "errors:quizz.answerEmpty"))
+    .array(answerValidator)
     .min(2, "errors:quizz.tooFewAnswers")
     .max(4, "errors:quizz.tooManyAnswers"),
   solutions: z
@@ -28,3 +49,4 @@ export const quizzValidator = z.object({
 })
 
 export type QuizzValidated = z.infer<typeof quizzValidator>
+export type AnswerValidated = z.infer<typeof answerObjectValidator> & AnswerOption

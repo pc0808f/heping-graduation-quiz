@@ -1,4 +1,5 @@
 {
+  "addAnswerImagePlaceholder": "Image URL (optional)",
   "addAnswerPlaceholder": "Add an answer...",
   "addQuestion": "Add question",
   "answersCountSuffix": " answers",

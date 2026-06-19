@@ -1,0 +1,44 @@
+{
+  "configurationsTitle": "設定",
+  "logout": "登出",
+  "passwordPlaceholder": "密碼",
+  "quizz": {
+    "create": "建立題庫",
+    "delete": "刪除題庫",
+    "deleteConfirm": "確定要刪除「{{name}}」嗎？此動作無法復原。",
+    "deleted": "題庫已刪除",
+    "import": "從 JSON 匯入題庫",
+    "none": "還沒有建立題庫",
+    "notFound": "找不到題庫",
+    "pleaseCreate": "請先建立題庫",
+    "pleaseSelect": "請選擇題庫",
+    "startGame": "開始遊戲"
+  },
+  "result": {
+    "delete": "刪除紀錄",
+    "deleteConfirm": "確定要刪除「{{name}}」的紀錄嗎？此動作無法復原。",
+    "deleted": "紀錄已刪除",
+    "noAnswer": "未作答",
+    "none": "還沒有紀錄，完成一場遊戲後這裡會顯示結果",
+    "paginationOf": " / ",
+    "stats": {
+      "correctAnswers": "答對數",
+      "playersAnswered": "已作答玩家數"
+    },
+    "table": {
+      "answered": "已作答",
+      "correct": "答對",
+      "correctIncorrect": "對 / 錯",
+      "incorrect": "答錯",
+      "player": "玩家",
+      "points": "分數"
+    },
+    "playerCount": "{{count}} 位玩家",
+    "timeLimitSuffix": "秒答題時間"
+  },
+  "tabs": {
+    "play": "開始",
+    "quizz": "題庫",
+    "results": "紀錄"
+  }
+}

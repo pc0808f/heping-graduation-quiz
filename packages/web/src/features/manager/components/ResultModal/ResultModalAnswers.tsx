@@ -1,5 +1,5 @@
 import { MEDIA_TYPES, NO_TIME_LIMIT } from "@razzia/common/constants"
-import type { QuestionMedia } from "@razzia/common/types/game"
+import type { AnswerOption, QuestionMedia } from "@razzia/common/types/game"
 import {
   ANSWERS_COLORS,
   ANSWERS_LABELS,
@@ -9,8 +9,11 @@ import clsx from "clsx"
 import { Check, Clock, ImageOff, Music, Video, X } from "lucide-react"
 import { useTranslation } from "react-i18next"
 
+const getAnswerText = (a: string | AnswerOption): string =>
+  typeof a === "string" ? a : (a.text ?? "")
+
 interface AnswerRow {
-  label: string
+  label: string | AnswerOption
   count: number
   isCorrect: boolean
   color: string | null
@@ -116,7 +119,7 @@ const ResultModalAnswers = () => {
                 "text-gray-400": !row.color,
               })}
             >
-              {row.label}
+              {getAnswerText(row.label)}
             </span>
 
             <div className="shrink-0">

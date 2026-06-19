@@ -13,11 +13,15 @@ import Wait from "@razzia/web/features/game/components/states/Wait"
 
 import { STATUS } from "@razzia/common/types/game/status"
 
+// HEPING 和平實驗國小 主題配色
+// 校徽是「白底、藍字、橘綠點綴」，四選項配色採用：
+// A = HEPING 藍 (主色) | B = 活力橘 (點綴) | C = 翠綠 (點綴) | D = 海軍深藍 (對比)
+// 跟原本的 Kahoot 紅/藍/綠/黃 不一樣，但都維持高對比、彩色四選項的 Kahoot 精神
 export const ANSWERS_COLORS = [
-  "bg-[#E69F00] text-white",
-  "bg-[#56B4E9] text-white",
-  "bg-[#3DBFA0] text-white",
-  "bg-[#CC79A7] text-white",
+  "bg-[#1E88E5] text-white", // A: HEPING 藍
+  "bg-[#FB8C00] text-white", // B: 點綴橘
+  "bg-[#43A047] text-white", // C: 點綴綠
+  "bg-[#0D47A1] text-white", // D: 海軍深藍
 ]
 
 export const ANSWERS_LABELS = ["A", "B", "C", "D"]
