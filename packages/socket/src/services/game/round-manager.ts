@@ -85,9 +85,12 @@ export class RoundManager {
 
     this.started = true
 
+    const quizzTheme = this.opts.quizz.theme ?? "default"
+
     this.opts.broadcast(STATUS.SHOW_START, {
       time: 3,
       subject: this.opts.quizz.subject,
+      theme: quizzTheme,
     })
 
     await sleep(3)
@@ -104,6 +107,7 @@ export class RoundManager {
     }
 
     const question = this.opts.quizz.questions[this.currentQuestion]
+    const quizzTheme = this.opts.quizz.theme ?? "default"
 
     this.opts.onNewQuestion()
 
@@ -115,6 +119,7 @@ export class RoundManager {
     this.opts.broadcast(STATUS.SHOW_PREPARED, {
       totalAnswers: question.answers.length,
       questionNumber: this.currentQuestion + 1,
+      theme: quizzTheme,
     })
 
     await sleep(2)
@@ -130,6 +135,7 @@ export class RoundManager {
       question: question.question,
       media: imageMedia,
       cooldown: question.cooldown,
+      theme: quizzTheme,
     })
 
     await sleep(question.cooldown)
@@ -146,6 +152,7 @@ export class RoundManager {
       media: question.media,
       time: question.time,
       totalPlayer: this.opts.players.count(),
+      theme: quizzTheme,
     })
 
     await this.opts.cooldown.start(question.time)

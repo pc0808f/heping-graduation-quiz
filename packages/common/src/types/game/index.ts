@@ -38,8 +38,11 @@ export interface Question {
   time: number
 }
 
+export type QuizzTheme = "default" | "heping"
+
 export interface Quizz {
   subject: string
+  theme?: QuizzTheme
   questions: Question[]
 }
 
@@ -48,6 +51,7 @@ export type QuizzWithId = Quizz & { id: string }
 export interface QuizzMeta {
   id: string
   subject: string
+  theme?: QuizzTheme
 }
 
 export interface GameUpdateQuestion {

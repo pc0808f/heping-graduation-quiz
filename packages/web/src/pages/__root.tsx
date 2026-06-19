@@ -4,11 +4,13 @@ import {
   SocketProvider,
   useSocket,
 } from "@razzia/web/features/game/contexts/socket-context"
+import { THEME_TITLES, useGameThemeStore } from "@razzia/web/hooks/useTheme"
 import { createRootRoute, Outlet } from "@tanstack/react-router"
 import { useEffect } from "react"
 
 const GameLayout = () => {
   const { isConnected, connect } = useSocket()
+  const theme = useGameThemeStore((s) => s.theme)
 
   useEffect(() => {
     if (!isConnected) {
@@ -18,11 +20,12 @@ const GameLayout = () => {
 
   useEffect(() => {
     document.body.classList.add("bg-secondary")
+    document.title = THEME_TITLES[theme] ?? "Razzia"
 
     return () => {
       document.body.classList.remove("bg-secondary")
     }
-  }, [])
+  }, [theme])
 
   return (
     <div className="bg-secondary antialiased">

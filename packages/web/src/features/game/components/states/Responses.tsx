@@ -1,10 +1,11 @@
 import type { ManagerStatusDataMap } from "@razzia/common/types/game/status"
 import AnswerButton from "@razzia/web/features/game/components/AnswerButton"
 import {
-  ANSWERS_COLORS,
   ANSWERS_LABELS,
+  getAnswerColors,
   SFX,
 } from "@razzia/web/features/game/utils/constants"
+import { useGameThemeStore } from "@razzia/web/hooks/useTheme"
 import { calculatePercentages } from "@razzia/web/features/game/utils/score"
 import clsx from "clsx"
 import { useEffect, useState } from "react"
@@ -17,6 +18,8 @@ interface Props {
 const Responses = ({
   data: { question, answers, responses, solutions },
 }: Props) => {
+  const theme = useGameThemeStore((s) => s.theme)
+  const answerColors = getAnswerColors(theme)
   const [percentages, setPercentages] = useState<Record<string, string>>({})
   const [isMusicPlaying, setIsMusicPlaying] = useState(false)
 
@@ -67,7 +70,7 @@ const Responses = ({
               key={key}
               className={clsx(
                 "flex flex-col justify-end self-end overflow-hidden rounded-md",
-                ANSWERS_COLORS[key],
+                answerColors[key % answerColors.length],
               )}
               style={{ height: percentages[key] }}
             >
@@ -85,7 +88,7 @@ const Responses = ({
             <AnswerButton
               key={key}
               answer={answer}
-              className={clsx(ANSWERS_COLORS[key], {
+              className={clsx(answerColors[key % answerColors.length], {
                 // oxlint-disable-next-line typescript/no-unnecessary-condition
                 "opacity-65": responses && !solutions.includes(key),
               })}

@@ -12,17 +12,34 @@ import Start from "@razzia/web/features/game/components/states/Start"
 import Wait from "@razzia/web/features/game/components/states/Wait"
 
 import { STATUS } from "@razzia/common/types/game/status"
+import type { QuizzTheme } from "@razzia/common/types/game"
 
-// HEPING 和平實驗國小 主題配色
-// 校徽是「白底、藍字、橘綠點綴」，四選項配色採用：
-// A = HEPING 藍 (主色) | B = 活力橘 (點綴) | C = 翠綠 (點綴) | D = 海軍深藍 (對比)
-// 跟原本的 Kahoot 紅/藍/綠/黃 不一樣，但都維持高對比、彩色四選項的 Kahoot 精神
-export const ANSWERS_COLORS = [
-  "bg-[#1E88E5] text-white", // A: HEPING 藍
-  "bg-[#FB8C00] text-white", // B: 點綴橘
-  "bg-[#43A047] text-white", // C: 點綴綠
-  "bg-[#0D47A1] text-white", // D: 海軍深藍
+// Razzia 原本的四選項配色（Color Universal Design）
+const ANSWERS_COLORS_DEFAULT = [
+  "bg-[#E69F00] text-white",
+  "bg-[#56B4E9] text-white",
+  "bg-[#3DBFA0] text-white",
+  "bg-[#CC79A7] text-white",
 ]
+
+// HEPING 和平實驗國小 楓香班 主題配色
+// 校徽是「白底、藍字、橘綠點綴」：
+// A = HEPING 藍 (主色) | B = 活力橘 (點綴) | C = 翠綠 (點綴) | D = 海軍深藍 (對比)
+const ANSWERS_COLORS_HEPING = [
+  "bg-[#1E88E5] text-white",
+  "bg-[#FB8C00] text-white",
+  "bg-[#43A047] text-white",
+  "bg-[#0D47A1] text-white",
+]
+
+/** 依主題取得四選項配色（向後相容：未傳入 theme 視為 default） */
+export const getAnswerColors = (theme?: QuizzTheme): readonly string[] => {
+  if (theme === "heping") return ANSWERS_COLORS_HEPING
+  return ANSWERS_COLORS_DEFAULT
+}
+
+/** 向後相容：保留原本的 ANSWERS_COLORS 變數（給沒改完的舊呼叫端用） */
+export const ANSWERS_COLORS = ANSWERS_COLORS_DEFAULT
 
 export const ANSWERS_LABELS = ["A", "B", "C", "D"]
 

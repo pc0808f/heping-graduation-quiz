@@ -168,3 +168,45 @@ button:not(:disabled),
     transform: scale(1);
   }
 }
+
+/* 楓葉飄落 — 答對彩蛋 */
+.anim-falling-maple {
+  animation: fallMaple 2s ease-in forwards;
+}
+
+@keyframes fallMaple {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(120vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+/* 楓葉「由綠轉紅」漸變彩蛋 — 答題進度主題 */
+.anim-maple-progress {
+  animation: mapleProgress 0.8s ease-out forwards;
+}
+
+@keyframes mapleProgress {
+  0% {
+    transform: scale(0.6) rotate(-20deg);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.15) rotate(8deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}

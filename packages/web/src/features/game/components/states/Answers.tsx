@@ -9,10 +9,11 @@ import {
 } from "@razzia/web/features/game/contexts/socket-context"
 import { usePlayerStore } from "@razzia/web/features/game/stores/player"
 import {
-  ANSWERS_COLORS,
   ANSWERS_LABELS,
+  getAnswerColors,
   SFX,
 } from "@razzia/web/features/game/utils/constants"
+import { useGameThemeStore } from "@razzia/web/hooks/useTheme"
 import clsx from "clsx"
 import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
@@ -23,10 +24,13 @@ interface Props {
 }
 
 const Answers = ({
-  data: { question, answers, media, time, totalPlayer },
+  data: { question, answers, media, time, totalPlayer, theme: statusTheme },
 }: Props) => {
   const { socket } = useSocket()
   const { player, gameId } = usePlayerStore()
+  const storeTheme = useGameThemeStore((s) => s.theme)
+  const theme = statusTheme ?? storeTheme
+  const answerColors = getAnswerColors(theme)
 
   const [cooldown, setCooldown] = useState(time)
   const [totalAnswer, setTotalAnswer] = useState(0)
@@ -118,7 +122,7 @@ const Answers = ({
             <AnswerButton
               key={key}
               answer={answer}
-              className={clsx(ANSWERS_COLORS[key])}
+              className={clsx(answerColors[key % answerColors.length])}
               label={ANSWERS_LABELS[key]}
               onClick={handleAnswer(key)}
             />

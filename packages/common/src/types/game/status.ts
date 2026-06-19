@@ -16,12 +16,17 @@ export const STATUS = {
 export type Status = (typeof STATUS)[keyof typeof STATUS]
 
 export interface CommonStatusDataMap {
-  SHOW_START: { time: number; subject: string }
-  SHOW_PREPARED: { totalAnswers: number; questionNumber: number }
+  SHOW_START: { time: number; subject: string; theme?: "default" | "heping" }
+  SHOW_PREPARED: {
+    totalAnswers: number
+    questionNumber: number
+    theme?: "default" | "heping"
+  }
   SHOW_QUESTION: {
     question: string
     media?: QuestionMedia
     cooldown: number
+    theme?: "default" | "heping"
   }
   SELECT_ANSWER: {
     question: string
@@ -29,6 +34,7 @@ export interface CommonStatusDataMap {
     media?: QuestionMedia
     time: number
     totalPlayer: number
+    theme?: "default" | "heping"
   }
   SHOW_RESULT: {
     correct: boolean

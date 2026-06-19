@@ -1,4 +1,8 @@
-import type { Question, QuizzWithId } from "@razzia/common/types/game"
+import type {
+  Question,
+  QuizzTheme,
+  QuizzWithId,
+} from "@razzia/common/types/game"
 import {
   createContext,
   useContext,
@@ -15,6 +19,8 @@ interface QuizzEditorContextType {
   quizzId: string | null
   subject: string
   setSubject: (_subject: string) => void
+  theme: QuizzTheme
+  setTheme: (_theme: QuizzTheme) => void
   questions: QuestionWithId[]
   currentIndex: number
   currentQuestion: QuestionWithId
@@ -55,6 +61,9 @@ export const QuizzEditorProvider = ({
 }: QuizzEditorProviderProps) => {
   const [subject, setSubject] = useState(
     initialData?.subject ?? "Untitled Quizz",
+  )
+  const [theme, setTheme] = useState<QuizzTheme>(
+    initialData?.theme ?? "default",
   )
   const [questions, setQuestions] = useState<QuestionWithId[]>(
     initialData
@@ -103,6 +112,8 @@ export const QuizzEditorProvider = ({
         quizzId: initialData?.id ?? null,
         subject,
         setSubject,
+        theme,
+        setTheme,
         questions,
         currentIndex,
         currentQuestion,

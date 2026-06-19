@@ -80,7 +80,11 @@ export const getGameConfig = (): GameConfig => {
 }
 
 export const getQuizzMeta = () =>
-  getQuizz().map(({ id, subject }) => ({ id, subject }))
+  getQuizz().map(({ id, subject, theme }) => ({
+    id,
+    subject,
+    theme: theme ?? "default",
+  }))
 
 export const getQuizzById = (id: string) => {
   const filePath = getPath(`quizz/${id}.json`)

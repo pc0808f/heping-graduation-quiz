@@ -58,6 +58,7 @@ const questionValidator = z.object({
 
 export const quizzValidator = z.object({
   subject: z.string().min(1, "errors:quizz.subjectEmpty"),
+  theme: z.enum(["default", "heping"]).optional().default("default"),
   questions: z.array(questionValidator).min(1, "errors:quizz.noQuestions"),
 })
 

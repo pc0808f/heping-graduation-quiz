@@ -2,6 +2,8 @@ import type {
   ClientToServerEvents,
   ServerToClientEvents,
 } from "@razzia/common/types/game/socket"
+import type { QuizzTheme } from "@razzia/common/types/game"
+import { useGameThemeStore } from "@razzia/web/hooks/useTheme"
 import React, {
   createContext,
   useCallback,
@@ -76,7 +78,18 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
       console.error("Connection error:", err.message)
     })
 
+    // 從 server 廣播的 game:status 抓 theme 同步到 client store
+    // oxlint-disable-next-line @typescript-eslint/no-explicit-any
+    const statusHandler = (payload: any) => {
+      const theme = payload?.data?.theme as QuizzTheme | undefined
+      if (theme === "default" || theme === "heping") {
+        useGameThemeStore.getState().setTheme(theme)
+      }
+    }
+    socketClient.on("game:status", statusHandler)
+
     return () => {
+      socketClient.off("game:status", statusHandler)
       socketClient.disconnect()
     }
   }, [])
