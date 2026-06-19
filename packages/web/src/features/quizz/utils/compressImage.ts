@@ -1,7 +1,8 @@
 // 將使用者選取的圖片檔壓縮成 data: URI（base64），直接內嵌進題庫。
-// 上傳當下就在瀏覽器縮小：先把尺寸限制在 MAX_DIMENSION，再逐步降低 JPEG
-// 品質；萬一仍超過目標大小，會再進一步縮小尺寸重試，盡量讓每張圖都夠小，
-// 使用者完全不需要自己處理原圖大小。
+// - HEIC/HEIF（iPhone）：多數瀏覽器無法解碼，先用 heic2any 轉成 JPEG。
+// - GIF：保留原檔以維持動畫（不經 canvas，否則會變靜態圖）。
+// - 其餘：縮到最長邊 MAX_DIMENSION，再逐步降品質／必要時再縮尺寸。
+// 目的是讓使用者不論什麼格式、多大的原圖，上傳當下就自動處理好。
 
 const MAX_DIMENSION = 1280
 // 目標：解碼後約 300KB 以下
@@ -9,34 +10,25 @@ const TARGET_MAX_BYTES = 300 * 1024
 const MIN_QUALITY = 0.5
 // 尺寸縮到這個以下就不再縮，直接接受
 const MIN_DIMENSION = 480
+// GIF 原檔大小上限（不壓縮，僅原樣保留）
+const MAX_GIF_BYTES = 8 * 1024 * 1024
 
 // 「data:」URI 的 base64 長度約為實際位元組的 4/3 倍
 const approxBytes = (dataUrl: string) => Math.ceil(dataUrl.length * 0.75)
 
-export const compressImageToDataUrl = (file: File): Promise<string> =>
+const isHeic = (file: File) =>
+  /image\/hei[cf]/iu.test(file.type) || /\.hei[cf]$/iu.test(file.name)
+
+const readAsDataUrl = (blob: Blob): Promise<string> =>
   new Promise((resolve, reject) => {
-    if (!file.type.startsWith("image/")) {
-      reject(new Error("not an image"))
+    const reader = new FileReader()
+    reader.onerror = () => reject(new Error("read failed"))
+    reader.onload = () => resolve(reader.result as string)
+    reader.readAsDataURL(blob)
+  })
 
-      return
-    }
-
-    // 動畫 GIF 經過 canvas 會被壓成靜態圖，直接保留原檔以維持動畫
-    if (file.type === "image/gif") {
-      if (file.size > 8 * 1024 * 1024) {
-        reject(new Error("gif too large"))
-
-        return
-      }
-
-      const gifReader = new FileReader()
-      gifReader.onerror = () => reject(new Error("read failed"))
-      gifReader.onload = () => resolve(gifReader.result as string)
-      gifReader.readAsDataURL(file)
-
-      return
-    }
-
+const compressViaCanvas = (blob: Blob): Promise<string> =>
+  new Promise((resolve, reject) => {
     const reader = new FileReader()
 
     reader.onerror = () => reject(new Error("read failed"))
@@ -99,5 +91,34 @@ export const compressImageToDataUrl = (file: File): Promise<string> =>
       img.src = reader.result as string
     }
 
-    reader.readAsDataURL(file)
+    reader.readAsDataURL(blob)
   })
+
+export const compressImageToDataUrl = async (file: File): Promise<string> => {
+  let source: Blob = file
+
+  // iPhone HEIC/HEIF：多數瀏覽器無法直接解碼，先轉成 JPEG（heic2any 較大，
+  // 只在真的遇到 HEIC 時才動態載入，不影響一般載入速度）
+  if (isHeic(file)) {
+    const heic2any = (await import("heic2any")).default
+    const converted = await heic2any({
+      blob: file,
+      toType: "image/jpeg",
+      quality: 0.9,
+    })
+    source = Array.isArray(converted) ? converted[0] : converted
+  } else if (!file.type.startsWith("image/")) {
+    throw new Error("not an image")
+  }
+
+  // 動畫 GIF：保留原檔以維持動畫（轉檔後的 source 已是 JPEG，不會進這裡）
+  if (source.type === "image/gif") {
+    if (source.size > MAX_GIF_BYTES) {
+      throw new Error("gif too large")
+    }
+
+    return readAsDataUrl(source)
+  }
+
+  return compressViaCanvas(source)
+}

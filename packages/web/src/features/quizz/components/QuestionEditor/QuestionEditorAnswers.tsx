@@ -168,7 +168,7 @@ const QuestionEditorAnswers = () => {
                   <Upload className="size-4" />
                   <input
                     type="file"
-                    accept="image/*"
+                    accept="image/*,.heic,.heif"
                     className="hidden"
                     onChange={handleUploadAnswerImage(i)}
                   />
