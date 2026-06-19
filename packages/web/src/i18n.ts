@@ -29,7 +29,10 @@ i18n
     defaultNS: "common",
     resources,
     detection: {
-      order: ["localStorage", "navigator"],
+      // Only honour an explicit choice saved by the language switcher.
+      // Without a saved value we fall back to zh-TW instead of following the
+      // browser language, so the UI defaults to Traditional Chinese for everyone.
+      order: ["localStorage"],
       caches: ["localStorage"],
     },
     interpolation: { escapeValue: false },
