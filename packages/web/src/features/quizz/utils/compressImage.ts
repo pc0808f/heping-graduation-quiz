@@ -21,6 +21,22 @@ export const compressImageToDataUrl = (file: File): Promise<string> =>
       return
     }
 
+    // 動畫 GIF 經過 canvas 會被壓成靜態圖，直接保留原檔以維持動畫
+    if (file.type === "image/gif") {
+      if (file.size > 8 * 1024 * 1024) {
+        reject(new Error("gif too large"))
+
+        return
+      }
+
+      const gifReader = new FileReader()
+      gifReader.onerror = () => reject(new Error("read failed"))
+      gifReader.onload = () => resolve(gifReader.result as string)
+      gifReader.readAsDataURL(file)
+
+      return
+    }
+
     const reader = new FileReader()
 
     reader.onerror = () => reject(new Error("read failed"))

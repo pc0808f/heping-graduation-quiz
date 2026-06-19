@@ -28,7 +28,7 @@
     "failedToDelete": "Failed to delete quizz",
     "failedToSave": "Quizz is incomplete, make sure all questions have a title and at least one correct answer",
     "failedToUpdate": "Failed to update quizz",
-    "imageProcessFailed": "Failed to process the image, please try a smaller one",
+    "imageProcessFailed": "Failed to process the image. Use JPG/PNG/GIF (convert HEIC to JPG first) or try a smaller one",
     "invalidImageUrl": "Answer image URL must be a valid URL",
     "invalidMediaUrl": "Media URL must be a valid URL",
     "noQuestions": "A quizz must have at least one question",
