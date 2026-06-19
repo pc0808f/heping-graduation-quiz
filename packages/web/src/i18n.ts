@@ -6,7 +6,10 @@ const modules = import.meta.glob("./locales/*/*.json", { eager: true })
 
 const resources = Object.entries(modules).reduce<Resource>(
   (acc, [path, mod]) => {
-    const match = /\.\/locales\/(\w+)\/(\w+)\.json$/u.exec(path)
+    // Language folder may contain a hyphen (e.g. "zh-TW"), so allow "-" in the
+    // first capture. Using \w+ here silently dropped every zh-TW resource,
+    // making the UI fall back to raw i18n keys.
+    const match = /\.\/locales\/([\w-]+)\/(\w+)\.json$/u.exec(path)
 
     if (!match) {
       return acc

@@ -14,16 +14,23 @@ const LANGUAGES = [
 
 const LanguageSwitcher = () => {
   const { t, i18n } = useTranslation()
-  const normalizedLanguage = i18n.language.slice(0, 2)
+  // Match the full language code (e.g. "zh-TW") so the switcher reflects the
+  // active language; fall back to the 2-letter prefix, then to zh-TW.
+  const currentLanguage =
+    LANGUAGES.find((l) => l.code === i18n.language)?.code ??
+    LANGUAGES.find((l) => l.code === i18n.language.slice(0, 2))?.code ??
+    "zh-TW"
 
   return (
     <Select.Root
-      value={normalizedLanguage}
+      value={currentLanguage}
       onValueChange={(lang) => i18n.changeLanguage(lang)}
     >
       <Select.Trigger className="flex cursor-pointer items-center gap-1.5 rounded-lg border border-gray-200 bg-white px-2 py-1.5 text-sm font-semibold text-gray-600 hover:border-gray-300 focus:outline-none">
         <Globe className="size-4 text-gray-500" />
-        <Select.Value>{normalizedLanguage.toUpperCase()}</Select.Value>
+        <Select.Value>
+          {currentLanguage.split("-")[0].toUpperCase()}
+        </Select.Value>
       </Select.Trigger>
 
       <Select.Portal>
