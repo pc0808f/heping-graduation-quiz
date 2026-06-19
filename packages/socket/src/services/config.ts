@@ -55,21 +55,28 @@ export const initConfig = () => {
 }
 
 export const getGameConfig = (): GameConfig => {
-  const isExists = fs.existsSync(getPath("game.json"))
+  // Allow overriding the manager password via env var (e.g. on hosting
+  // platforms with an ephemeral filesystem like Railway, where config/game.json
+  // is regenerated with the default password on every deploy).
+  const envPassword = process.env.MANAGER_PASSWORD
 
-  if (!isExists) {
-    throw new Error("Game config not found")
+  let config: GameConfig = {} as GameConfig
+
+  if (fs.existsSync(getPath("game.json"))) {
+    try {
+      config = JSON.parse(
+        fs.readFileSync(getPath("game.json"), "utf-8"),
+      ) as GameConfig
+    } catch (error) {
+      console.error("Failed to read game config:", error)
+    }
   }
 
-  try {
-    const config = fs.readFileSync(getPath("game.json"), "utf-8")
-
-    return JSON.parse(config) as GameConfig
-  } catch (error) {
-    console.error("Failed to read game config:", error)
+  if (envPassword) {
+    config = { ...config, managerPassword: envPassword }
   }
 
-  return {} as GameConfig
+  return config
 }
 
 export const getQuizzMeta = () =>
