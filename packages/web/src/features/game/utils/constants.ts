@@ -88,6 +88,29 @@ export const SFX = {
   BOUMP_SOUND: "/sounds/boump.mp3",
 } as const
 
+/**
+ * 答題時背景音樂（依 quizz.music 設定）
+ * - "default"：Razzia 預設（answersMusic.mp3，Kahoot-style 緊張音樂）
+ * - "ocean"：海浪 / 蘭嶼風（需要放 ocean.mp3 到 public/sounds/，見 README）
+ * - "none"：關閉音樂
+ */
+export const MUSIC_BY_THEME: Record<string, string | null> = {
+  default: "/sounds/answersMusic.mp3",
+  ocean: "/sounds/ocean.mp3",
+  none: null,
+}
+
+export const getMusicUrl = (music?: string): string | null => {
+  if (!music) return MUSIC_BY_THEME.default ?? null
+  return MUSIC_BY_THEME[music] ?? null
+}
+
+export const MUSIC_LABELS: Record<string, string> = {
+  default: "預設音樂",
+  ocean: "海洋 / 蘭嶼風",
+  none: "關閉音樂",
+}
+
 export const MANAGER_SKIP_EVENTS = {
   [STATUS.SHOW_ROOM]: EVENTS.MANAGER.START_GAME,
   [STATUS.SELECT_ANSWER]: EVENTS.MANAGER.ABORT_QUIZ,

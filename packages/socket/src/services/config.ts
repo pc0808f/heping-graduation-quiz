@@ -80,10 +80,11 @@ export const getGameConfig = (): GameConfig => {
 }
 
 export const getQuizzMeta = () =>
-  getQuizz().map(({ id, subject, theme }) => ({
+  getQuizz().map(({ id, subject, theme, music }) => ({
     id,
     subject,
     theme: theme ?? "default",
+    music: music ?? "default",
   }))
 
 export const getQuizzById = (id: string) => {

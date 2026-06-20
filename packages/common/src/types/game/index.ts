@@ -39,10 +39,12 @@ export interface Question {
 }
 
 export type QuizzTheme = "default" | "heping"
+export type QuizzMusic = "default" | "ocean" | "none"
 
 export interface Quizz {
   subject: string
   theme?: QuizzTheme
+  music?: QuizzMusic
   questions: Question[]
 }
 
@@ -52,6 +54,7 @@ export interface QuizzMeta {
   id: string
   subject: string
   theme?: QuizzTheme
+  music?: QuizzMusic
 }
 
 export interface GameUpdateQuestion {

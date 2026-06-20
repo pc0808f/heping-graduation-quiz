@@ -1,4 +1,9 @@
-import type { Player, QuestionMedia, AnswerOption } from "@razzia/common/types/game"
+import type {
+  Player,
+  QuestionMedia,
+  AnswerOption,
+  QuizzMusic,
+} from "@razzia/common/types/game"
 
 export const STATUS = {
   SHOW_ROOM: "SHOW_ROOM",
@@ -16,17 +21,24 @@ export const STATUS = {
 export type Status = (typeof STATUS)[keyof typeof STATUS]
 
 export interface CommonStatusDataMap {
-  SHOW_START: { time: number; subject: string; theme?: "default" | "heping" }
+  SHOW_START: {
+    time: number
+    subject: string
+    theme?: "default" | "heping"
+    music?: "default" | "ocean" | "none"
+  }
   SHOW_PREPARED: {
     totalAnswers: number
     questionNumber: number
     theme?: "default" | "heping"
+    music?: "default" | "ocean" | "none"
   }
   SHOW_QUESTION: {
     question: string
     media?: QuestionMedia
     cooldown: number
     theme?: "default" | "heping"
+    music?: "default" | "ocean" | "none"
   }
   SELECT_ANSWER: {
     question: string
@@ -35,6 +47,7 @@ export interface CommonStatusDataMap {
     time: number
     totalPlayer: number
     theme?: "default" | "heping"
+    music?: QuizzMusic
   }
   SHOW_RESULT: {
     correct: boolean

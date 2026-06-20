@@ -5,3 +5,5 @@
 release.json
 web-dev*.log
 web-dev-err.log
+socket-dev*.log
+socket-dev-err.log
