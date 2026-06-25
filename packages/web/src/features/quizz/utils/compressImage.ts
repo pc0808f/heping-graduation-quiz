@@ -10,8 +10,9 @@ const TARGET_MAX_BYTES = 300 * 1024
 const MIN_QUALITY = 0.5
 // 尺寸縮到這個以下就不再縮，直接接受
 const MIN_DIMENSION = 480
-// GIF 原檔大小上限（不壓縮，僅原樣保留）
-const MAX_GIF_BYTES = 8 * 1024 * 1024
+// GIF 原檔大小上限（不壓縮，僅原樣保留）。base64 會膨脹約 4/3 倍，
+// 需與 socket 的 maxHttpBufferSize 對齊（見 socket/src/index.ts）
+const MAX_GIF_BYTES = 40 * 1024 * 1024
 
 // 「data:」URI 的 base64 長度約為實際位元組的 4/3 倍
 const approxBytes = (dataUrl: string) => Math.ceil(dataUrl.length * 0.75)
